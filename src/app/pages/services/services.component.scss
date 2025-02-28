@@ -1,0 +1,19 @@
+h1 {
+  margin-bottom: 10px; /* ✅ Reduce bottom margin */
+  padding-bottom: 0px; /* ✅ Remove extra padding */
+}
+
+ul {
+  padding: 0; /* ✅ Remove default list padding */
+  margin-top: 0; /* ✅ Reduce space at the top */
+}
+
+li {
+  margin-bottom: 10px; /* ✅ Reduce space between items */
+  list-style-type: none; /* Optional: Remove bullet points */
+}
+
+button {
+  margin-top: 5px; /* ✅ Reduce button spacing */
+  display: block; /* Ensures proper alignment */
+}

@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Community Forum</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h1 class="title">Community Forum</h1>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading messages...</p>
+  </div>
+
+  <!-- Display Messages -->
+  <div *ngIf="!isLoading">
+    <div *ngIf="posts$ | async as posts; else noMessages">
+      <div *ngFor="let post of posts" class="chat-message">
+        <p class="chat-bubble">{{ post.message }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Messages Found -->
+  <ng-template #noMessages>
+    <p class="no-messages">No messages yet. Start the conversation!</p>
+  </ng-template>
+
+  <!-- Message Input -->
+  <div class="message-input">
+    <ion-input [(ngModel)]="message" placeholder="Type your message..." class="input-field"></ion-input>
+    <ion-button (click)="sendMessage()" class="send-btn">Send</ion-button>
+  </div>
+</ion-content>

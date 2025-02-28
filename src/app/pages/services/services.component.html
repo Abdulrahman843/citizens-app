@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Government Services</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2 style="margin-bottom: 8px;">Available Government Services</h2>
+
+  <!-- ✅ Use async pipe to subscribe to the observable -->
+  <div *ngIf="services$ | async as services; else loading">
+    <ion-list>
+      <ion-item *ngFor="let service of services" style="margin-bottom: 12px;">
+        <ion-label>
+          <h3>{{ service.name }}</h3>
+          <p>{{ service.description }}</p>
+        </ion-label>
+        <ion-button color="primary" expand="block" (click)="requestService(service.id)">
+          Request
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- ✅ Show loading state while fetching data -->
+  <ng-template #loading>
+    <p>Loading services...</p>
+  </ng-template>
+</ion-content>

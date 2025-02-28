@@ -1,26 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8" />
-  <title>Ionic App</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#1976D2"> <!-- ✅ Improves mobile display -->
+  <title>Citizens App</title>
 
-  <base href="/" />
+  <!-- ✅ Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 
-  <meta name="color-scheme" content="light dark" />
-  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="msapplication-tap-highlight" content="no" />
+  <!-- ✅ Google Maps API (Ensures Async Loading & initMap Availability) -->
+  <script>
+    function initMap() {
+      console.log("✅ Google Maps API Loaded Successfully!");
+    }
 
-  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+    function loadGoogleMaps() {
+      if (!window.google) {
+        const script = document.createElement("script");
+        script.src =
+          "https://maps.googleapis.com/maps/api/js?key=AIzaSyDlXQnjw_DvfLFN8L4UgKNR2JNysKpHfDk&callback=initMap&libraries=places&v=weekly";
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+      }
+    }
 
-  <!-- add to homescreen for ios -->
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    window.initMap = initMap; // ✅ Make `initMap` globally accessible
+    window.onload = loadGoogleMaps; // ✅ Ensures script loads only after page is ready
+  </script>
+
+  <!-- ✅ Fix for Cordova in Browsers -->
+  <script type="text/javascript">
+    if (window.location.protocol === "file:") {
+      document.write('<script src="cordova.js"><\/script>');
+    }
+
+    document.addEventListener("deviceready", function () {
+      console.log("✅ Cordova is now available.");
+    }, false);
+  </script>
+
 </head>
-
 <body>
   <app-root></app-root>
 </body>
-
 </html>

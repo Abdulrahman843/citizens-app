@@ -1,0 +1,34 @@
+.login-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+p {
+  color: gray;
+  margin-bottom: 20px;
+}
+
+.signup-text {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+ion-item {
+  margin-bottom: 10px;
+}
+
+ion-button {
+  margin-top: 20px;
+}
+
+ion-spinner {
+  --color: white;
+}
