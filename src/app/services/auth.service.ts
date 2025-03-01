@@ -27,4 +27,9 @@ export class AuthService {
   async getCurrentUser(): Promise<User | null> {
     return firstValueFrom(user(this.auth));
   }
+
+  // ✅ Add isLoggedIn method to check user authentication status
+  isLoggedIn(): boolean {
+    return this.auth.currentUser !== null;
+  }
 }

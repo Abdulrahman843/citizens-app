@@ -1,10 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';  // ✅ Import FormsModule
-import { AuthService } from 'src/app/services/auth.service';
-import { IonicModule} from '@ionic/angular';
-import { ToastController } from '@ionic/angular';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { IonicModule, ToastController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth.service'; // ✅ Absolute Path
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,15 +11,15 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
   styleUrls: ['./login.component.scss'],
   standalone: true,
   imports: [CommonModule, FormsModule, IonicModule],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]  // ✅ Add this line
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]  // ✅ Correctly placed
 })
-
 export class LoginComponent {
   email = '';
   password = '';
   isLoading = false;
   private authService = inject(AuthService);
   private toastCtrl = inject(ToastController);
+  private router = inject(Router); // ✅ Router Injection for Navigation
 
   async login() {
     if (!this.email || !this.password) {
@@ -30,12 +29,16 @@ export class LoginComponent {
 
     this.isLoading = true;
     try {
-      await this.authService.signIn(this.email, this.password);
-      this.showToast('✅ Login Successful!', 'success');
-      console.log('User signed in successfully');
+      const success = await this.authService.signIn(this.email, this.password);
+      if (success) {
+        this.showToast('✅ Login Successful!', 'success');
+        this.router.navigate(['/home']); // ✅ Redirect after login
+      } else {
+        this.showToast('❌ Invalid credentials', 'danger');
+      }
     } catch (err) {
       console.error('Login Error:', err);
-      this.showToast('❌ Login failed. Please check your credentials.', 'danger');
+      this.showToast('❌ Login failed.', 'danger');
     } finally {
       this.isLoading = false;
     }

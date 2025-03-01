@@ -1,28 +1,28 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';  // ✅ Import FormsModule
-import { AuthService } from 'src/app/services/auth.service';
-import { IonicModule} from '@ionic/angular';
-import { ToastController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import { IonicModule, ToastController } from '@ionic/angular';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule],
+  imports: [CommonModule, FormsModule, IonicModule]
   schemas: [CUSTOM_ELEMENTS_SCHEMA]  // ✅ Add this line
 })
-
-export class LoginComponent {
+export class RegisterComponent {
   email = '';
   password = '';
   isLoading = false;
   private authService = inject(AuthService);
+  private router = inject(Router);
   private toastCtrl = inject(ToastController);
 
-  async login() {
+  async register() {
     if (!this.email || !this.password) {
       this.showToast('⚠️ Please enter email and password.', 'warning');
       return;
@@ -30,12 +30,12 @@ export class LoginComponent {
 
     this.isLoading = true;
     try {
-      await this.authService.signIn(this.email, this.password);
-      this.showToast('✅ Login Successful!', 'success');
-      console.log('User signed in successfully');
+      await this.authService.register(this.email, this.password);
+      this.showToast('✅ Registration Successful!', 'success');
+      this.router.navigate(['/login']);
     } catch (err) {
-      console.error('Login Error:', err);
-      this.showToast('❌ Login failed. Please check your credentials.', 'danger');
+      console.error('Registration Error:', err);
+      this.showToast('❌ Registration failed.', 'danger');
     } finally {
       this.isLoading = false;
     }
