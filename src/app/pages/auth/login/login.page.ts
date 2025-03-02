@@ -7,7 +7,7 @@ import { LoginComponent } from './login.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-login-page',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,

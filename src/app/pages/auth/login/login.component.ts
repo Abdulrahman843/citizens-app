@@ -4,10 +4,12 @@ import { FormsModule } from '@angular/forms';  // ✅ Import FormsModule
 import { AuthService } from 'src/app/services/auth.service';
 import { IonicModule} from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { user } from '@angular/fire/auth';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-login-component',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   standalone: true,
@@ -21,6 +23,7 @@ export class LoginComponent {
   isLoading = false;
   private authService = inject(AuthService);
   private toastCtrl = inject(ToastController);
+  private router = inject(Router);
 
   async login() {
     if (!this.email || !this.password) {
@@ -30,9 +33,24 @@ export class LoginComponent {
 
     this.isLoading = true;
     try {
-      await this.authService.signIn(this.email, this.password);
-      this.showToast('✅ Login Successful!', 'success');
-      console.log('User signed in successfully');
+      const userCredential = await this.authService.signIn(this.email, this.password);
+      if (userCredential && userCredential.user) {
+        this.showToast('✅ Login Successful!', 'success');
+
+        // ✅ Clear form fields after successful login
+        this.email = '';
+        this.password = '';
+
+        // ✅ Redirect to Home Page (or another page)
+        this.router.navigate(['/home']);
+
+        // ✅ Fallback in case Angular navigation fails
+        setTimeout(() => {
+          window.location.href = "/home";
+        }, 1000);
+      } else {
+        this.showToast('❌ Invalid credentials', 'danger');
+      }
     } catch (err) {
       console.error('Login Error:', err);
       this.showToast('❌ Login failed. Please check your credentials.', 'danger');

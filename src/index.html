@@ -10,35 +10,28 @@
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 
   <!-- ✅ Google Maps API (Ensures Async Loading & initMap Availability) -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlXQnjw_DvfLFN8L4UgKNR2JNysKpHfDk&callback=initMap&libraries=places&v=weekly"></script>
+
   <script>
     function initMap() {
       console.log("✅ Google Maps API Loaded Successfully!");
     }
 
-    function loadGoogleMaps() {
-      if (!window.google) {
-        const script = document.createElement("script");
-        script.src =
-          "https://maps.googleapis.com/maps/api/js?key=AIzaSyDlXQnjw_DvfLFN8L4UgKNR2JNysKpHfDk&callback=initMap&libraries=places&v=weekly";
-        script.async = true;
-        script.defer = true;
-        document.head.appendChild(script);
-      }
-    }
-
-    window.initMap = initMap; // ✅ Make `initMap` globally accessible
-    window.onload = loadGoogleMaps; // ✅ Ensures script loads only after page is ready
+    window.initMap = initMap; // ✅ Ensures function is globally available
   </script>
 
-  <!-- ✅ Fix for Cordova in Browsers -->
+  <!-- ✅ Cordova Compatibility -->
   <script type="text/javascript">
-    if (window.location.protocol === "file:") {
-      document.write('<script src="cordova.js"><\/script>');
-    }
-
     document.addEventListener("deviceready", function () {
       console.log("✅ Cordova is now available.");
     }, false);
+
+    // ✅ Ensures Cordova loads only in mobile environments
+    if (window.location.protocol === "file:") {
+      var cordovaScript = document.createElement("script");
+      cordovaScript.src = "cordova.js";
+      document.head.appendChild(cordovaScript);
+    }
   </script>
 
 </head>

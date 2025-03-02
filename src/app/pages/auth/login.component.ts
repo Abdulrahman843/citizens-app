@@ -1,17 +1,21 @@
-import { Component, inject, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ToastController } from '@ionic/angular';
-import { AuthService } from 'src/app/services/auth.service'; // ✅ Absolute Path
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service'; // ✅ Correct Absolute Path
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]  // ✅ Correctly placed
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    RouterModule // ✅ Ensure it's included correctly
+  ]
 })
 export class LoginComponent {
   email = '';
@@ -29,10 +33,10 @@ export class LoginComponent {
 
     this.isLoading = true;
     try {
-      const success = await this.authService.signIn(this.email, this.password);
-      if (success) {
+      const userCredential = await this.authService.signIn(this.email, this.password);
+      if (userCredential && userCredential.user) { // ✅ Proper user check
         this.showToast('✅ Login Successful!', 'success');
-        this.router.navigate(['/home']); // ✅ Redirect after login
+        this.router.navigate(['/home']);
       } else {
         this.showToast('❌ Invalid credentials', 'danger');
       }
